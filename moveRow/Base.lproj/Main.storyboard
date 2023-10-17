@@ -10,7 +10,7 @@
         <!--ドラッグで並べ替え-->
         <scene sceneID="Xm9-ny-Kp6">
             <objects>
-                <tableViewController storyboardIdentifier="ViewController" id="PCa-tq-RVm" customClass="ViewController" customModule="DragDropTable" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="ViewController" id="PCa-tq-RVm" customClass="ViewController" customModule="moveRow" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="kaW-Hd-nHR">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -47,11 +47,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="ドラッグで並べ替え" id="iOk-AW-6Nu">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" image="square.and.pencil.circle" catalog="system" id="1kg-er-uos">
-                            <connections>
-                                <action selector="editButtonTapped:" destination="PCa-tq-RVm" id="wg2-Hd-SRU"/>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Edit" image="square.and.pencil.circle" catalog="system" id="1kg-er-uos"/>
                     </navigationItem>
                     <connections>
                         <outlet property="editButton" destination="1kg-er-uos" id="KTc-er-nWg"/>

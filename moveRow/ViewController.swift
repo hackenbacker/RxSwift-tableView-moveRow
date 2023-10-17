@@ -23,7 +23,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         tableView.delegate = self
-        tableView.dataSource = nil // dataSourceに明示的にnilをセットしないとRxSwiftでFatalErrorが発生する。
+        tableView.dataSource = nil // 明示的にnilをセットしないとFatalErrorが発生する
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         let isEditing = viewModel.editingMode.value.isEditing
         tableView.isEditing = isEditing
@@ -32,6 +32,7 @@ class ViewController: UIViewController {
     }
 
     private func setupBindings() {
+        // itemsが更新された時の処理
         viewModel.items
             .bind(to: tableView.rx.items(cellIdentifier: "cell")) { row, item, cell in
                 cell.textLabel?.text = item.title
@@ -39,13 +40,22 @@ class ViewController: UIViewController {
             }
             .disposed(by: disposeBag)
         
+        // cellを移動した時の処理
         tableView.rx.itemMoved
             .subscribe(onNext: { indexPaths in
                 self.viewModel.moveItem(from: indexPaths.sourceIndex.row,
                                         to: indexPaths.destinationIndex.row)
             })
             .disposed(by:disposeBag)
-        
+
+        // editButtonがtapされた時の処理
+        editButton.rx.tap.asDriver()
+            .drive(onNext: { _ in
+                self.viewModel.toggleEditingMode()
+            })
+            .disposed(by: disposeBag)
+
+        // editModeが更新された時の処理
         viewModel.editingMode
             .subscribe(onNext: { editingMode in
                 let isEditing = editingMode.isEditing
@@ -61,10 +71,6 @@ class ViewController: UIViewController {
         } else {
             editButton.image = UIImage(systemName: "list.bullet")
         }
-    }
-
-    @IBAction func editButtonTapped(_ sender: Any) {
-        viewModel.toggleEditingMode()
     }
 }
 
