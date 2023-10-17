@@ -34,11 +34,36 @@ class ViewController: UIViewController {
     private func setupBindings() {
         // itemsが更新された時の処理
         viewModel.items
-            .bind(to: tableView.rx.items(cellIdentifier: "cell")) { row, item, cell in
-                cell.textLabel?.text = item.title
-                cell.detailTextLabel?.text = item.subtitle
+            .bind(to: tableView.rx.items) { (tableView, row, item) in
+                let cell = tableView.dequeueReusableCell(withIdentifier: "cell",
+                                                         for: IndexPath(row: row, section: 0))
+                // iOS14 or later
+                var content = UIListContentConfiguration.valueCell()
+                content.text = item.title
+                content.secondaryText = item.subtitle
+                cell.contentConfiguration = content
+
+                // iOS13
+                //cell.textLabel?.text = item.title
+                //cell.detailTextLabel?.text = item.subtitle
+                return cell
             }
             .disposed(by: disposeBag)
+
+        // itemsが更新された時の処理
+//        viewModel.items
+//            .bind(to: tableView.rx.items(cellIdentifier: "cell")) { row, item, cell in
+//                // iOS14 or later
+//                var content = UIListContentConfiguration.valueCell()
+//                content.text = item.title
+//                content.secondaryText = item.subtitle
+//                cell.contentConfiguration = content
+//
+//                // iOS13
+//                //cell.textLabel?.text = item.title
+//                //cell.detailTextLabel?.text = item.subtitle
+//            }
+//            .disposed(by: disposeBag)
         
         // cellを移動した時の処理
         tableView.rx.itemMoved
