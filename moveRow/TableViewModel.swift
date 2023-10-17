@@ -11,27 +11,26 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class TableViewModel {
-    enum EditingState {
+final class TableViewModel {
+    enum EditingMode {
         case edit
         case done
+        
+        var isEditing: Bool {
+            self == .edit
+        }
     }
 
-    var editingState = BehaviorRelay(value: EditingState.done)
-    lazy var items = BehaviorRelay(value: makeData())
-
-    /// アイテム数を返す.
-    var numberOfItems: Int {
-        items.value.count
-    }
+    var editingMode = BehaviorRelay<EditingMode>(value: .done)
+    lazy var items = BehaviorRelay<[Item]>(value: makeData())
 
     /// 編集状態をトグルする.
-    func toggleEditingState() {
-        switch editingState.value {
+    func toggleEditingMode() {
+        switch editingMode.value {
         case .edit:
-            editingState.accept(.done)
+            editingMode.accept(.done)
         case .done:
-            editingState.accept(.edit)
+            editingMode.accept(.edit)
         }
     }
     
@@ -44,13 +43,6 @@ class TableViewModel {
         let item = mutableItems.remove(at: sourceIndex)
         mutableItems.insert(item, at: destinationIndex)
         items.accept(mutableItems)
-    }
-    
-    /// 指定したindexのItemを取得する.
-    /// - Parameter index: 所得したいデータのindex.
-    /// - Returns: 取得したItem.
-    func getItem(at index: Int) -> Item {
-        items.value[index]
     }
     
     /// 初期データを作成する.

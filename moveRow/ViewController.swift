@@ -9,6 +9,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class ViewController: UIViewController {
 
@@ -22,28 +23,40 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         tableView.delegate = self
-        tableView.dataSource = self
+        tableView.dataSource = nil // dataSourceに明示的にnilをセットしないとRxSwiftでFatalErrorが発生する。
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableView.isEditing = false
-        updateEditButton(to: .done)
+        let isEditing = viewModel.editingMode.value.isEditing
+        tableView.isEditing = isEditing
+        updateEditButton(isEditing)
         setupBindings()
     }
 
     private func setupBindings() {
-        viewModel.editingState.asObservable()
-            .subscribe(onNext: { editingState in
-                if case .edit = editingState {
-                    self.tableView.isEditing = true
-                } else {
-                    self.tableView.isEditing = false
-                }
-                self.updateEditButton(to: editingState)
+        viewModel.items
+            .bind(to: tableView.rx.items(cellIdentifier: "cell")) { row, item, cell in
+                cell.textLabel?.text = item.title
+                cell.detailTextLabel?.text = item.subtitle
+            }
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemMoved
+            .subscribe(onNext: { indexPaths in
+                self.viewModel.moveItem(from: indexPaths.sourceIndex.row,
+                                        to: indexPaths.destinationIndex.row)
+            })
+            .disposed(by:disposeBag)
+        
+        viewModel.editingMode
+            .subscribe(onNext: { editingMode in
+                let isEditing = editingMode.isEditing
+                self.tableView.isEditing = isEditing
+                self.updateEditButton(isEditing)
             })
             .disposed(by: disposeBag)
     }
 
-    private func updateEditButton(to editingState: TableViewModel.EditingState) {
-        if case .edit = editingState {
+    private func updateEditButton(_ isEditing: Bool) {
+        if isEditing {
             editButton.image = UIImage(systemName: "hand.point.up.left.and.text")
         } else {
             editButton.image = UIImage(systemName: "list.bullet")
@@ -51,7 +64,7 @@ class ViewController: UIViewController {
     }
 
     @IBAction func editButtonTapped(_ sender: Any) {
-        viewModel.toggleEditingState()
+        viewModel.toggleEditingMode()
     }
 }
 
@@ -70,27 +83,27 @@ extension ViewController: UITableViewDelegate {
     // 並び替えのみ有効にする (ここまで)
 }
 
-extension ViewController: UITableViewDataSource {
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int) -> Int {
-        viewModel.numberOfItems
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let row = indexPath.row
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = viewModel.getItem(at: row).title
-        cell.detailTextLabel?.text = viewModel.getItem(at: row).subtitle
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView,
-                   moveRowAt sourceIndexPath: IndexPath,
-                   to destinationIndexPath: IndexPath) {
-        viewModel.moveItem(from: sourceIndexPath.row, to: destinationIndexPath.row)
-    }
-}
+//extension ViewController: UITableViewDataSource {
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 1
+//    }
+//    
+//    func tableView(_ tableView: UITableView,
+//                   numberOfRowsInSection section: Int) -> Int {
+//        viewModel.numberOfItems
+//    }
+//    
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let row = indexPath.row
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+//        cell.textLabel?.text = viewModel.getItem(at: row).title
+//        cell.detailTextLabel?.text = viewModel.getItem(at: row).subtitle
+//        return cell
+//    }
+//
+//    func tableView(_ tableView: UITableView,
+//                   moveRowAt sourceIndexPath: IndexPath,
+//                   to destinationIndexPath: IndexPath) {
+//        viewModel.moveItem(from: sourceIndexPath.row, to: destinationIndexPath.row)
+//    }
+//}
