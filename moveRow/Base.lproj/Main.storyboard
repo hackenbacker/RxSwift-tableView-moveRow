@@ -47,10 +47,14 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="ドラッグで並べ替え" id="iOk-AW-6Nu">
-                        <barButtonItem key="rightBarButtonItem" title="Edit" image="square.and.pencil.circle" catalog="system" id="1kg-er-uos"/>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Edit" image="square.and.pencil.circle" catalog="system" id="1kg-er-uos"/>
+                            <barButtonItem style="plain" systemItem="refresh" id="d2y-Ig-MHy" userLabel="refresh"/>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="editButton" destination="1kg-er-uos" id="KTc-er-nWg"/>
+                        <outlet property="refreshButton" destination="d2y-Ig-MHy" id="RCt-98-RTX"/>
                         <outlet property="tableView" destination="kaW-Hd-nHR" id="Ltb-wR-2hG"/>
                     </connections>
                 </tableViewController>

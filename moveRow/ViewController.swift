@@ -15,6 +15,7 @@ class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editButton: UIBarButtonItem!
+    @IBOutlet weak var refreshButton: UIBarButtonItem!
     
     let disposeBag = DisposeBag()
     var viewModel = TableViewModel()
@@ -112,13 +113,19 @@ class ViewController: UIViewController {
                 self.updateEditButton(isEditing)
             })
             .disposed(by: disposeBag)
+        
+        refreshButton.rx.tap.asDriver()
+            .drive(onNext: { _ in
+                self.viewModel.downloadData()
+            })
+            .disposed(by: disposeBag)
     }
 
     private func updateEditButton(_ isEditing: Bool) {
         if isEditing {
-            editButton.image = UIImage(systemName: "hand.point.up.left.and.text")
-        } else {
             editButton.image = UIImage(systemName: "list.bullet")
+        } else {
+            editButton.image = UIImage(systemName: "hand.point.up.left.and.text")
         }
     }
 }
