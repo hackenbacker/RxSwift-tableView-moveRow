@@ -49,7 +49,7 @@
                     <navigationItem key="navigationItem" title="ドラッグで並べ替え" id="iOk-AW-6Nu">
                         <rightBarButtonItems>
                             <barButtonItem title="Edit" image="square.and.pencil.circle" catalog="system" id="1kg-er-uos"/>
-                            <barButtonItem style="plain" systemItem="refresh" id="d2y-Ig-MHy" userLabel="refresh"/>
+                            <barButtonItem systemItem="refresh" id="d2y-Ig-MHy" userLabel="refresh"/>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
