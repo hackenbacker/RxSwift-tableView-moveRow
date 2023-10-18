@@ -25,14 +25,21 @@ class ViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = nil // 明示的にnilをセットしないとFatalErrorが発生する
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        //tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
         let isEditing = viewModel.editingMode.value.isEditing
         tableView.isEditing = isEditing
         updateEditButton(isEditing)
         setupBindings()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewModel.downloadData()
+    }
+    
     private func setupBindings() {
         // itemsが更新された時の処理
+        // 自前でセルを生成する場合
         viewModel.items
             .bind(to: tableView.rx.items) { (tableView, row, item) in
                 let cell = tableView.dequeueReusableCell(withIdentifier: "cell",
@@ -51,6 +58,7 @@ class ViewController: UIViewController {
             .disposed(by: disposeBag)
 
         // itemsが更新された時の処理
+        // カスタムセルを使わない場合
 //        viewModel.items
 //            .bind(to: tableView.rx.items(cellIdentifier: "cell")) { row, item, cell in
 //                // iOS14 or later
@@ -64,6 +72,22 @@ class ViewController: UIViewController {
 //                //cell.detailTextLabel?.text = item.subtitle
 //            }
 //            .disposed(by: disposeBag)
+
+        // itemsが更新された時の処理
+        // カスタムセルを扱う場合
+        // FIXME: 動かない
+//        viewModel.items
+//            .bind(to: tableView.rx.items(cellIdentifier: CustomCell.identifier,
+//                                         cellType: CustomCell.self)) { (row, element, cell) in
+//                cell.configure(item: element)
+//            }
+//            .disposed(by: disposeBag)
+        
+        // itemsが更新された時の処理
+        // カスタムDataSourceを使う場合
+//        viewModel.items
+//            .bind(to: tableView.rx.items(dataSource: MyDataSource()))
+//            .disposed(by: disposeBag)
         
         // cellを移動した時の処理
         tableView.rx.itemMoved
@@ -71,7 +95,7 @@ class ViewController: UIViewController {
                 self.viewModel.moveItem(from: indexPaths.sourceIndex.row,
                                         to: indexPaths.destinationIndex.row)
             })
-            .disposed(by:disposeBag)
+            .disposed(by: disposeBag)
 
         // editButtonがtapされた時の処理
         editButton.rx.tap.asDriver()

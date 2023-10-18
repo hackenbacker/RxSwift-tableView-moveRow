@@ -20,6 +20,9 @@
 		C50F0D9B2ADE6874005A64DF /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = C50F0D9A2ADE6874005A64DF /* RxRelay */; };
 		C50F0D9D2ADE68C7005A64DF /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50F0D9C2ADE68C7005A64DF /* Item.swift */; };
 		C50F0D9F2ADE68F1005A64DF /* TableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50F0D9E2ADE68F1005A64DF /* TableViewModel.swift */; };
+		C50F0DA12ADFB77B005A64DF /* CustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50F0DA02ADFB77B005A64DF /* CustomCell.swift */; };
+		C50F0DA32AE007B1005A64DF /* CustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = C50F0DA22AE007B1005A64DF /* CustomCell.xib */; };
+		C50F0DA52AE06D24005A64DF /* MyDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C50F0DA42AE06D24005A64DF /* MyDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +36,9 @@
 		C50F0D8B2ADE683A005A64DF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C50F0D9C2ADE68C7005A64DF /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		C50F0D9E2ADE68F1005A64DF /* TableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewModel.swift; sourceTree = "<group>"; };
+		C50F0DA02ADFB77B005A64DF /* CustomCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCell.swift; sourceTree = "<group>"; };
+		C50F0DA22AE007B1005A64DF /* CustomCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomCell.xib; sourceTree = "<group>"; };
+		C50F0DA42AE06D24005A64DF /* MyDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +79,9 @@
 				C50F0D7D2ADE6839005A64DF /* AppDelegate.swift */,
 				C50F0D7F2ADE6839005A64DF /* SceneDelegate.swift */,
 				C50F0D812ADE6839005A64DF /* ViewController.swift */,
+				C50F0DA42AE06D24005A64DF /* MyDataSource.swift */,
+				C50F0DA02ADFB77B005A64DF /* CustomCell.swift */,
+				C50F0DA22AE007B1005A64DF /* CustomCell.xib */,
 				C50F0D832ADE6839005A64DF /* Main.storyboard */,
 				C50F0D862ADE683A005A64DF /* Assets.xcassets */,
 				C50F0D882ADE683A005A64DF /* LaunchScreen.storyboard */,
@@ -153,6 +162,7 @@
 			files = (
 				C50F0D8A2ADE683A005A64DF /* LaunchScreen.storyboard in Resources */,
 				C50F0D872ADE683A005A64DF /* Assets.xcassets in Resources */,
+				C50F0DA32AE007B1005A64DF /* CustomCell.xib in Resources */,
 				C50F0D852ADE6839005A64DF /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -168,7 +178,9 @@
 				C50F0D9F2ADE68F1005A64DF /* TableViewModel.swift in Sources */,
 				C50F0D822ADE6839005A64DF /* ViewController.swift in Sources */,
 				C50F0D7E2ADE6839005A64DF /* AppDelegate.swift in Sources */,
+				C50F0DA12ADFB77B005A64DF /* CustomCell.swift in Sources */,
 				C50F0D802ADE6839005A64DF /* SceneDelegate.swift in Sources */,
+				C50F0DA52AE06D24005A64DF /* MyDataSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
