@@ -22,7 +22,8 @@ final class TableViewModel {
     }
 
     var editingMode = BehaviorRelay<EditingMode>(value: .done)
-    lazy var items = BehaviorRelay<[Item]>(value: makeData())
+    var items = PublishRelay<[Item]>()
+    private var data: [Item] = []
 
     /// 編集状態をトグルする.
     func toggleEditingMode() {
@@ -39,10 +40,16 @@ final class TableViewModel {
     ///   - sourceIndex: 移動元のindex.
     ///   - destinationIndex:  移動先のindex.
     func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
-        var mutableItems = items.value
-        let item = mutableItems.remove(at: sourceIndex)
-        mutableItems.insert(item, at: destinationIndex)
-        items.accept(mutableItems)
+        let item = data.remove(at: sourceIndex)
+        data.insert(item, at: destinationIndex)
+        items.accept(data)
+    }
+    
+    func downloadData() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.data = self.makeData()
+            self.items.accept(self.data)
+        }
     }
     
     /// 初期データを作成する.
