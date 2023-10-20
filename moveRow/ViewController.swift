@@ -143,28 +143,3 @@ extension ViewController: UITableViewDelegate {
     }
     // 並び替えのみ有効にする (ここまで)
 }
-
-//extension ViewController: UITableViewDataSource {
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 1
-//    }
-//    
-//    func tableView(_ tableView: UITableView,
-//                   numberOfRowsInSection section: Int) -> Int {
-//        viewModel.numberOfItems
-//    }
-//    
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let row = indexPath.row
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-//        cell.textLabel?.text = viewModel.getItem(at: row).title
-//        cell.detailTextLabel?.text = viewModel.getItem(at: row).subtitle
-//        return cell
-//    }
-//
-//    func tableView(_ tableView: UITableView,
-//                   moveRowAt sourceIndexPath: IndexPath,
-//                   to destinationIndexPath: IndexPath) {
-//        viewModel.moveItem(from: sourceIndexPath.row, to: destinationIndexPath.row)
-//    }
-//}
