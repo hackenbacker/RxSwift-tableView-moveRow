@@ -48,7 +48,7 @@ final class TableViewModel {
     }
     
     func downloadData() {
-        self.items.accept([])
+        items.accept([])
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             let data = self.makeData()
             self.items.accept(data)
