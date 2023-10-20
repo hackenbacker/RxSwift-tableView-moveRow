@@ -14,7 +14,7 @@ final class CustomCell: UITableViewCell {
     @IBOutlet private weak var subtitleLabel: UILabel!
 
     static var identifier: String {
-        "CustomCell"
+        String(describing: self)
     }
     static var nib: UINib {
         UINib(nibName: identifier, bundle: nil)
@@ -43,19 +43,19 @@ final class CustomCell: UITableViewCell {
 //   }
 }
 
-extension NSObject {
-    
-    /// Tells a class name for a class type.
-    /// - returns: a simple name.
-    /// - note: Class.className => "Class"
-    class var className: String {
-        return String(describing: self)
-    }
-    
-    /// Tells a class name for an instance.
-    /// - returns: a simple name.
-    /// - note: Instance.className => "Instance"
-    var className: String {
-        return type(of: self).className
-    }
-}
+//extension NSObject {
+//    
+//    /// Tells a class name for a class type.
+//    /// - returns: a simple name.
+//    /// - note: Class.className => "Class"
+//    class var className: String {
+//        return String(describing: self)
+//    }
+//    
+//    /// Tells a class name for an instance.
+//    /// - returns: a simple name.
+//    /// - note: Instance.className => "Instance"
+//    var className: String {
+//        return type(of: self).className
+//    }
+//}

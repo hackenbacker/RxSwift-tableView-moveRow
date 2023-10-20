@@ -11,7 +11,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class ViewController: UIViewController {
+final class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editButton: UIBarButtonItem!
@@ -25,8 +25,8 @@ class ViewController: UIViewController {
 
         tableView.delegate = self
         tableView.dataSource = nil // 明示的にnilをセットしないとFatalErrorが発生する
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        //tableView.register(CustomCell.self, forCellReuseIdentifier: CustomCell.identifier)
+        //tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CustomCell.nib, forCellReuseIdentifier: CustomCell.identifier)
         let isEditing = viewModel.editingMode.value.isEditing
         tableView.isEditing = isEditing
         updateEditButton(isEditing)
@@ -41,22 +41,22 @@ class ViewController: UIViewController {
     private func setupBindings() {
         // itemsが更新された時の処理
         // 自前でセルを生成する場合
-        viewModel.items
-            .bind(to: tableView.rx.items) { (tableView, row, item) in
-                let cell = tableView.dequeueReusableCell(withIdentifier: "cell",
-                                                         for: IndexPath(row: row, section: 0))
-                // iOS14 or later
-                var content = UIListContentConfiguration.valueCell()
-                content.text = item.title
-                content.secondaryText = item.subtitle
-                cell.contentConfiguration = content
-
-                // iOS13
-                //cell.textLabel?.text = item.title
-                //cell.detailTextLabel?.text = item.subtitle
-                return cell
-            }
-            .disposed(by: disposeBag)
+//        viewModel.items
+//            .bind(to: tableView.rx.items) { (tableView, row, item) in
+//                let cell = tableView.dequeueReusableCell(withIdentifier: "cell",
+//                                                         for: IndexPath(row: row, section: 0))
+//                // iOS14 or later
+//                var content = UIListContentConfiguration.valueCell()
+//                content.text = item.title
+//                content.secondaryText = item.subtitle
+//                cell.contentConfiguration = content
+//
+//                // iOS13
+//                //cell.textLabel?.text = item.title
+//                //cell.detailTextLabel?.text = item.subtitle
+//                return cell
+//            }
+//            .disposed(by: disposeBag)
 
         // itemsが更新された時の処理
         // カスタムセルを使わない場合
@@ -76,7 +76,6 @@ class ViewController: UIViewController {
 
         // itemsが更新された時の処理
         // カスタムセルを扱う場合
-        // FIXME: 動かない
 //        viewModel.items
 //            .bind(to: tableView.rx.items(cellIdentifier: CustomCell.identifier,
 //                                         cellType: CustomCell.self)) { (row, element, cell) in
@@ -86,9 +85,9 @@ class ViewController: UIViewController {
         
         // itemsが更新された時の処理
         // カスタムDataSourceを使う場合
-//        viewModel.items
-//            .bind(to: tableView.rx.items(dataSource: MyDataSource()))
-//            .disposed(by: disposeBag)
+        viewModel.items
+            .bind(to: tableView.rx.items(dataSource: MyDataSource()))
+            .disposed(by: disposeBag)
         
         // cellを移動した時の処理
         tableView.rx.itemMoved

@@ -13,8 +13,8 @@ import RxCocoa
 
 final class MyDataSource: NSObject, UITableViewDataSource, RxTableViewDataSourceType {
     typealias Element = [Item]
-    var items = [Item]()
-
+    var items: Element = []
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
     }
