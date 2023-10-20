@@ -12,8 +12,8 @@ import RxSwift
 import RxCocoa
 
 final class MyDataSource: NSObject, UITableViewDataSource, RxTableViewDataSourceType {
-    typealias Element = [Item]
-    var items: Element = []
+    typealias Element = TableViewModel.ItemsType
+    private var items = Element()
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return items.count
@@ -27,10 +27,9 @@ final class MyDataSource: NSObject, UITableViewDataSource, RxTableViewDataSource
         return cell
     }
 
-    func tableView(_ tableView: UITableView, observedEvent: Event<[Item]>) {
-        Binder(self) { dataSource, element in
-            guard let items = element.element else { return }
-            dataSource.items = items
+    func tableView(_ tableView: UITableView, observedEvent: Event<Element>) {
+        Binder(self) { dataSource, event in
+            dataSource.items = event.element ?? Element()
             tableView.reloadData()
         }
         .onNext(observedEvent)

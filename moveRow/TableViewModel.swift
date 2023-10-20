@@ -21,9 +21,10 @@ final class TableViewModel {
         }
     }
 
+    typealias ItemsType = [Item]
+    
     var editingMode = BehaviorRelay<EditingMode>(value: .done)
-    var items = PublishRelay<[Item]>()
-    private var data: [Item] = []
+    var items = BehaviorRelay<ItemsType>(value: [])
 
     /// 編集状態をトグルする.
     func toggleEditingMode() {
@@ -40,21 +41,22 @@ final class TableViewModel {
     ///   - sourceIndex: 移動元のindex.
     ///   - destinationIndex:  移動先のindex.
     func moveItem(from sourceIndex: Int, to destinationIndex: Int) {
-        let item = data.remove(at: sourceIndex)
-        data.insert(item, at: destinationIndex)
-        items.accept(data)
+        var mutableItems = items.value
+        let item = mutableItems.remove(at: sourceIndex)
+        mutableItems.insert(item, at: destinationIndex)
+        items.accept(mutableItems)
     }
     
     func downloadData() {
         self.items.accept([])
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.data = self.makeData()
-            self.items.accept(self.data)
+            let data = self.makeData()
+            self.items.accept(data)
         }
     }
     
     /// 初期データを作成する.
-    private func makeData() -> [Item] {
+    private func makeData() -> ItemsType {
         (1...100).map { n in
             Item(id: n, title: "\(n)番目", subtitle: "\(String(format: "%04x", n))")
         }
