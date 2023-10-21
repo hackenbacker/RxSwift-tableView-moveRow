@@ -14,9 +14,16 @@ import RxCocoa
 final class ViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var editButton: UIBarButtonItem!
-    @IBOutlet weak var refreshButton: UIBarButtonItem!
+    private var editButton =
+        if #available(iOS 17.0, *) {
+            UIBarButtonItem(title: nil,
+                            image: UIImage(systemName: "hand.point.up.left.and.text"),
+                            target: nil, action: nil)
+        } else {
+            UIBarButtonItem(systemItem: .edit)
+        }
     private var doneButton = UIBarButtonItem(systemItem: .done)
+    private var refreshButton = UIBarButtonItem(systemItem: .refresh)
     
     let disposeBag = DisposeBag()
     var viewModel = TableViewModel()
@@ -132,7 +139,6 @@ final class ViewController: UIViewController {
         if isEditing {
             self.navigationItem.rightBarButtonItems = [refreshButton, doneButton].reversed()
         } else {
-            editButton.image = UIImage(systemName: "hand.point.up.left.and.text")
             self.navigationItem.rightBarButtonItems = [refreshButton, editButton].reversed()
         }
     }
