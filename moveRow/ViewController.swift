@@ -16,6 +16,7 @@ final class ViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var refreshButton: UIBarButtonItem!
+    private var doneButton = UIBarButtonItem(systemItem: .done)
     
     let disposeBag = DisposeBag()
     var viewModel = TableViewModel()
@@ -104,6 +105,13 @@ final class ViewController: UIViewController {
             })
             .disposed(by: disposeBag)
 
+        // doneButtonがtapされた時の処理
+        doneButton.rx.tap.asDriver()
+            .drive(onNext: { _ in
+                self.viewModel.toggleEditingMode()
+            })
+            .disposed(by: disposeBag)
+
         // editModeが更新された時の処理
         viewModel.editingMode
             .subscribe(onNext: { editingMode in
@@ -122,9 +130,10 @@ final class ViewController: UIViewController {
 
     private func updateEditButton(_ isEditing: Bool) {
         if isEditing {
-            editButton.image = UIImage(systemName: "list.bullet")
+            self.navigationItem.rightBarButtonItems = [refreshButton, doneButton].reversed()
         } else {
             editButton.image = UIImage(systemName: "hand.point.up.left.and.text")
+            self.navigationItem.rightBarButtonItems = [refreshButton, editButton].reversed()
         }
     }
 }
