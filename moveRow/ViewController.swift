@@ -142,4 +142,8 @@ extension ViewController: UITableViewDelegate {
         return false
     }
     // 並び替えのみ有効にする (ここまで)
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 64
+    }
 }
